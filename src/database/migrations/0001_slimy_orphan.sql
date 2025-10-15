@@ -1,0 +1,1 @@
+DROP INDEX "accounts_provider_id_idx";
