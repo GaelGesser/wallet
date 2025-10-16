@@ -24,15 +24,14 @@ import { cn } from '@/lib/utils';
 const MIN_PASSWORD_LENGTH = 8;
 
 const signUpSchema = z.object({
-  email: z.email({
-    message: 'Endereço de e-mail inválido.',
-  }),
-  password: z.string().min(MIN_PASSWORD_LENGTH, {
-    message: `Senha deve ter pelo menos ${MIN_PASSWORD_LENGTH} caracteres.`,
-  }),
-  name: z.string().min(1, {
-    message: 'Nome é obrigatório.',
-  }),
+  email: z.email('Endereço de e-mail inválido.'),
+  password: z
+    .string()
+    .min(
+      MIN_PASSWORD_LENGTH,
+      `Senha deve ter pelo menos ${MIN_PASSWORD_LENGTH} caracteres.`
+    ),
+  name: z.string().min(1, 'Nome é obrigatório.'),
 });
 
 type SignUpSchema = z.infer<typeof signUpSchema>;
