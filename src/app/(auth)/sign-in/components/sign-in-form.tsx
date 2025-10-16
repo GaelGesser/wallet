@@ -18,6 +18,7 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import { Spinner } from '@/components/ui/spinner';
 import { cn } from '@/lib/utils';
 
 const MIN_PASSWORD_LENGTH = 8;
@@ -112,7 +113,9 @@ export function SignInForm({
               )}
             />
             <Field>
-              <Button type="submit">Entrar</Button>
+              <Button disabled={form.formState.isSubmitting} type="submit">
+                {form.formState.isSubmitting ? <Spinner /> : 'Entrar'}
+              </Button>
             </Field>
           </FieldGroup>
         </form>
