@@ -2,6 +2,7 @@
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Wallet } from 'lucide-react';
+import Link from 'next/link';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import z from 'zod';
@@ -17,35 +18,40 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import { Spinner } from '@/components/ui/spinner';
 import { cn } from '@/lib/utils';
 
 const MIN_PASSWORD_LENGTH = 8;
 
-const signInSchema = z.object({
+const signUpSchema = z.object({
   email: z.email({
     message: 'Endereço de e-mail inválido.',
   }),
   password: z.string().min(MIN_PASSWORD_LENGTH, {
     message: `Senha deve ter pelo menos ${MIN_PASSWORD_LENGTH} caracteres.`,
   }),
+  name: z.string().min(1, {
+    message: 'Nome é obrigatório.',
+  }),
 });
 
-type SignInSchema = z.infer<typeof signInSchema>;
+type SignUpSchema = z.infer<typeof signUpSchema>;
 
-export function SignInForm({
+export function SignUpForm({
   className,
   ...props
 }: React.ComponentProps<'div'>) {
-  const form = useForm<SignInSchema>({
+  const form = useForm<SignUpSchema>({
     defaultValues: {
       email: '',
       password: '',
+      name: '',
     },
-    resolver: zodResolver(signInSchema),
+    resolver: zodResolver(signUpSchema),
   });
 
-  const onSubmit = (data: SignInSchema) => {
-    toast.success('Login realizado com sucesso!');
+  const onSubmit = (data: SignUpSchema) => {
+    toast.success('Cadastro realizado com sucesso!');
     console.log('Form submitted:', data);
   };
 
@@ -55,20 +61,38 @@ export function SignInForm({
         <form className="space-y-8" onSubmit={form.handleSubmit(onSubmit)}>
           <FieldGroup>
             <div className="flex flex-col items-center gap-2 text-center">
-              <a
+              <Link
                 className="flex flex-col items-center gap-2 font-medium"
-                href="/"
+                href="/sign-in"
               >
                 <div className="flex size-8 items-center justify-center rounded-md">
                   <Wallet className="size-8 text-primary" />
                 </div>
                 <span className="sr-only">Wallet</span>
-              </a>
+              </Link>
               <h1 className="font-bold text-xl">Seja bem-vindo ao Wallet</h1>
               <FieldDescription className="text-xs">
-                Não tem uma conta? <a href="/sign-up">Crie uma conta</a>
+                Já tem uma conta? <Link href="/sign-in">Faça login</Link>
               </FieldDescription>
             </div>
+
+            <FormField
+              control={form.control}
+              name="name"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Nome</FormLabel>
+                  <FormControl>
+                    <Input placeholder="João da Silva" type="text" {...field} />
+                  </FormControl>
+                  <FormDescription>
+                    Digite seu nome para fazer cadastro.
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
             <FormField
               control={form.control}
               name="email"
@@ -83,7 +107,7 @@ export function SignInForm({
                     />
                   </FormControl>
                   <FormDescription>
-                    Digite seu endereço de e-mail para fazer login.
+                    Digite seu endereço de e-mail para fazer cadastro.
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
@@ -104,23 +128,25 @@ export function SignInForm({
                     />
                   </FormControl>
                   <FormDescription>
-                    Digite sua senha para fazer login.
+                    Digite sua senha para fazer cadastro.
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
             />
             <Field>
-              <Button type="submit">Entrar</Button>
+              <Button disabled={form.formState.isSubmitting} type="submit">
+                {form.formState.isSubmitting ? <Spinner /> : 'Cadastrar'}
+              </Button>
             </Field>
           </FieldGroup>
+          <FieldDescription className="px-6 text-center text-xs">
+            Ao continuar, você concorda com nossos{' '}
+            <a href="/terms-of-service">Termos de Serviço</a> e{' '}
+            <a href="/privacy-policy">Política de Privacidade</a>.
+          </FieldDescription>
         </form>
       </Form>
-      <FieldDescription className="px-6 text-center text-xs">
-        Ao continuar, você concorda com nossos{' '}
-        <a href="/terms-of-service">Termos de Serviço</a> e{' '}
-        <a href="/privacy-policy">Política de Privacidade</a>.
-      </FieldDescription>
     </div>
   );
 }
