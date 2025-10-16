@@ -5,5 +5,15 @@
     "formatter": {
       "quoteStyle": "single"
     }
+  },
+  "linter": {
+    "rules": {
+      "a11y": {
+        "noSvgWithoutTitle": "off"
+      },
+      "suspicious": {
+        "noConsole": "off"
+      }
+    }
   }
 }
