@@ -4,8 +4,8 @@ import { ThemeProvider } from '@/components/theme-provider';
 import { Toaster } from '@/components/ui/sonner';
 
 export const metadata: Metadata = {
-  title: 'Comex One',
-  description: 'Comex One',
+  title: 'Wallet',
+  description: 'Gerencie suas finanças com o Wallet',
 };
 
 export default function RootLayout({

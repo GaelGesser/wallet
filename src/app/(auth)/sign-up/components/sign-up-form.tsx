@@ -19,6 +19,7 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Spinner } from '@/components/ui/spinner';
+import { authClient } from '@/lib/auth-client';
 import { cn } from '@/lib/utils';
 
 const MIN_PASSWORD_LENGTH = 8;
@@ -49,9 +50,20 @@ export function SignUpForm({
     resolver: zodResolver(signUpSchema),
   });
 
-  const onSubmit = (data: SignUpSchema) => {
-    toast.success('Cadastro realizado com sucesso!');
-    console.log('Form submitted:', data);
+  const onSubmit = async ({ email, password, name }: SignUpSchema) => {
+    await authClient.signUp.email({
+      email,
+      password,
+      name,
+      fetchOptions: {
+        onSuccess: () => {
+          toast.success('Cadastro realizado com sucesso!');
+        },
+        onError: (ctx) => {
+          toast.error(ctx.error.message);
+        },
+      },
+    });
   };
 
   return (
