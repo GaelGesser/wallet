@@ -36,10 +36,10 @@ const signInSchema = z.object({
 
 type SignInSchema = z.infer<typeof signInSchema>;
 
-export function SignInForm({
+export const SignInForm = ({
   className,
   ...props
-}: React.ComponentProps<'div'>) {
+}: React.ComponentProps<'div'>) => {
   // const router = useRouter();
   const form = useForm<SignInSchema>({
     defaultValues: {
@@ -149,4 +149,4 @@ export function SignInForm({
       </FieldDescription>
     </div>
   );
-}
+};
