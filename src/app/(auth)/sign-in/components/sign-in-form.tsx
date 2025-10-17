@@ -19,6 +19,7 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Spinner } from '@/components/ui/spinner';
+import { authClient } from '@/lib/auth-client';
 import { cn } from '@/lib/utils';
 
 const MIN_PASSWORD_LENGTH = 8;
@@ -39,6 +40,7 @@ export function SignInForm({
   className,
   ...props
 }: React.ComponentProps<'div'>) {
+  // const router = useRouter();
   const form = useForm<SignInSchema>({
     defaultValues: {
       email: '',
@@ -47,9 +49,28 @@ export function SignInForm({
     resolver: zodResolver(signInSchema),
   });
 
-  const onSubmit = (data: SignInSchema) => {
-    toast.success('Login realizado com sucesso!');
-    console.log('Form submitted:', data);
+  const onSubmit = async ({ email, password }: SignInSchema) => {
+    await authClient.signIn.email({
+      email,
+      password,
+      fetchOptions: {
+        onSuccess: () => {
+          toast.success('Login realizado com sucesso!');
+          // router.push('/');
+        },
+        onError: (ctx) => {
+          console.log(ctx.error.code);
+
+          if (ctx.error.code === 'INVALID_EMAIL_OR_PASSWORD') {
+            toast.error('E-mail ou senha inválidos.');
+
+            return;
+          }
+
+          toast.error(ctx.error.message);
+        },
+      },
+    });
   };
 
   return (

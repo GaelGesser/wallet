@@ -12,7 +12,11 @@
         "noSvgWithoutTitle": "off"
       },
       "suspicious": {
-        "noConsole": "off"
+        "noConsole": "off",
+        "useAwait": "off"
+      },
+      "correctness": {
+        "noUndeclaredVariables": "off"
       }
     }
   }

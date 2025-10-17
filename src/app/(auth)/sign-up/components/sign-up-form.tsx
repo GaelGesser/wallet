@@ -3,6 +3,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Wallet } from 'lucide-react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import z from 'zod';
@@ -41,6 +42,7 @@ export function SignUpForm({
   className,
   ...props
 }: React.ComponentProps<'div'>) {
+  const router = useRouter();
   const form = useForm<SignUpSchema>({
     defaultValues: {
       email: '',
@@ -58,8 +60,18 @@ export function SignUpForm({
       fetchOptions: {
         onSuccess: () => {
           toast.success('Cadastro realizado com sucesso!');
+          router.push('/sign-in');
         },
         onError: (ctx) => {
+          if (ctx.error.code === 'USER_ALREADY_EXISTS_USE_ANOTHER_EMAIL') {
+            toast.error('E-mail já cadastrado. Use outro e-mail.');
+            form.setError('email', {
+              message: 'E-mail já cadastrado. Use outro e-mail.',
+            });
+
+            return;
+          }
+
           toast.error(ctx.error.message);
         },
       },
@@ -96,9 +108,11 @@ export function SignUpForm({
                   <FormControl>
                     <Input placeholder="João da Silva" type="text" {...field} />
                   </FormControl>
-                  <FormDescription>
-                    Digite seu nome para fazer cadastro.
-                  </FormDescription>
+                  {!form.formState.errors.name && (
+                    <FormDescription>
+                      Digite seu nome para fazer cadastro.
+                    </FormDescription>
+                  )}
                   <FormMessage />
                 </FormItem>
               )}
@@ -117,9 +131,11 @@ export function SignUpForm({
                       {...field}
                     />
                   </FormControl>
-                  <FormDescription>
-                    Digite seu endereço de e-mail para fazer cadastro.
-                  </FormDescription>
+                  {!form.formState.errors.email && (
+                    <FormDescription>
+                      Digite seu endereço de e-mail para fazer cadastro.
+                    </FormDescription>
+                  )}
                   <FormMessage />
                 </FormItem>
               )}
@@ -138,9 +154,11 @@ export function SignUpForm({
                       {...field}
                     />
                   </FormControl>
-                  <FormDescription>
-                    Digite sua senha para fazer cadastro.
-                  </FormDescription>
+                  {!form.formState.errors.password && (
+                    <FormDescription>
+                      Digite sua senha para fazer cadastro.
+                    </FormDescription>
+                  )}
                   <FormMessage />
                 </FormItem>
               )}
