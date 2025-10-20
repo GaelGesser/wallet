@@ -17,6 +17,9 @@
       },
       "correctness": {
         "noUndeclaredVariables": "off"
+      },
+      "nursery": {
+        "useConsistentTypeDefinitions": "off"
       }
     }
   }
