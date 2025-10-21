@@ -1,12 +1,10 @@
 'use client';
 
 import {
-  AudioWaveform,
   Banknote,
   BarChart,
-  Command,
   CreditCard,
-  GalleryVerticalEnd,
+  Landmark,
   LayoutDashboard,
   List,
   Tag,
@@ -18,9 +16,9 @@ import {
   SidebarHeader,
   SidebarRail,
 } from '../ui/sidebar';
+import { AccountSwitcher } from './account-switcher';
 import { NavMain } from './nav-main';
 import { NavUser } from './nav-user';
-import { TeamSwitcher } from './team-switcher';
 
 /**
  * Dados do sidebar da aplicação.
@@ -28,25 +26,28 @@ import { TeamSwitcher } from './team-switcher';
  */
 const data = {
   user: {
-    name: 'shadcn',
-    email: 'm@example.com',
-    avatar: '/avatars/shadcn.jpg',
+    name: 'Diego',
+    email: 'diego@outlook.com',
+    avatar: 'https://avatars.githubusercontent.com/u/2254731?v=4',
   },
-  teams: [
+  accounts: [
     {
-      name: 'Acme Inc',
-      logo: GalleryVerticalEnd,
-      plan: 'Enterprise',
+      name: 'Conta Itaú',
+      logo: Landmark,
+      color: 'bg-orange-500',
+      textColor: 'text-white',
     },
     {
-      name: 'Acme Corp.',
-      logo: AudioWaveform,
-      plan: 'Startup',
+      name: 'Conta Investimento',
+      logo: Landmark,
+      color: 'bg-yellow-500',
+      textColor: 'text-black',
     },
     {
-      name: 'Evil Corp.',
-      logo: Command,
-      plan: 'Free',
+      name: 'Conta Nubank',
+      logo: Landmark,
+      color: 'bg-purple-500',
+      textColor: 'text-white',
     },
   ],
   navMain: [
@@ -155,7 +156,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
-        <TeamSwitcher teams={data.teams} />
+        <AccountSwitcher accounts={data.accounts} />
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={data.navMain} />
