@@ -1,4 +1,5 @@
 import { Fragment } from 'react';
+import { ThemeToggle } from '../theme-toggle';
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -25,24 +26,31 @@ interface AppSidebarHeaderProps {
 export function AppSidebarHeader({ breadcrumbItems }: AppSidebarHeaderProps) {
   return (
     <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
-      <div className="flex items-center gap-2 px-4">
-        <SidebarTrigger className="-ml-1" />
-        <Separator
-          className="mr-2 data-[orientation=vertical]:h-4"
-          orientation="vertical"
-        />
-        <Breadcrumb>
-          <BreadcrumbList>
-            {breadcrumbItems.map((item) => (
-              <Fragment key={item.href}>
-                {item.separator && <BreadcrumbSeparator />}
-                <BreadcrumbItem className="hidden md:block">
-                  <BreadcrumbLink href={item.href}>{item.label}</BreadcrumbLink>
-                </BreadcrumbItem>
-              </Fragment>
-            ))}
-          </BreadcrumbList>
-        </Breadcrumb>
+      <div className="flex w-full items-center justify-between gap-2 px-4">
+        <div className="flex items-center gap-2">
+          <SidebarTrigger className="-ml-1" />
+          <Separator
+            className="mr-2 data-[orientation=vertical]:h-4"
+            orientation="vertical"
+          />
+          <Breadcrumb>
+            <BreadcrumbList>
+              {breadcrumbItems.map((item) => (
+                <Fragment key={item.href}>
+                  {item.separator && <BreadcrumbSeparator />}
+                  <BreadcrumbItem className="hidden md:block">
+                    <BreadcrumbLink href={item.href}>
+                      {item.label}
+                    </BreadcrumbLink>
+                  </BreadcrumbItem>
+                </Fragment>
+              ))}
+            </BreadcrumbList>
+          </Breadcrumb>
+        </div>
+        <div className="flex items-center gap-2">
+          <ThemeToggle />
+        </div>
       </div>
     </header>
   );
