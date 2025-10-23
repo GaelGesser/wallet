@@ -1,6 +1,7 @@
 import { Grid2X2, Plus, Search, Table } from 'lucide-react';
 import { AppSidebarBody } from '@/components/sidebar/app-sidebar-body';
 import { AppSidebarHeader } from '@/components/sidebar/app-sidebar-header';
+import AdvancedPagination from '@/components/ui/advanced-pagination';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -116,7 +117,7 @@ export default function TransactionsPage() {
             </div>
 
             {/* TODO: IMPLEMENTAR DROPDOWN DE FILTROS */}
-            <div className="flex w-full items-center py-2">
+            <div className="flex w-full items-center gap-2 py-2">
               <div className="flex items-center gap-2">
                 <Input className="max-w-xs" placeholder="Buscar transação" />
                 <Button size="icon" variant="outline">
@@ -132,6 +133,9 @@ export default function TransactionsPage() {
 
             <TabsContent value="table">
               <DataTable columns={columns} data={mockTransactions} />
+              <div className="mt-4">
+                <AdvancedPagination currentPage={1} totalPages={4} />
+              </div>
             </TabsContent>
 
             {/* TODO: IMPLEMENTAR VISUALIZAÇÃO EM CARDS */}

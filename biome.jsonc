@@ -20,6 +20,9 @@
       },
       "nursery": {
         "useConsistentTypeDefinitions": "off"
+      },
+      "performance": {
+        "noNamespaceImport": "off"
       }
     }
   }
