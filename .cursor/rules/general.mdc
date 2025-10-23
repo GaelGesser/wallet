@@ -25,6 +25,8 @@ Princípios Principais:
 - Use kebab-case para nomes de pastas e arquivos.
 - Sempre use TypeScript para escrever código.
 - DRY (Don't Repeat Yourself). Evite duplicidade de código. Quando necessário, crie funções/componentes reutilizáveis.
+- NUNCA escreva comentários no seu código.
+- NUNCA rode `npm run dev` para verificar se as mudanças estão funcionando.
 
 React/Next.js
 
@@ -37,7 +39,13 @@ React/Next.js
 - Sempre use a biblioteca "next-safe-action" ao criar com Server Actions. Use a Server Exemplo: (por enquanto nao tem exemplo).
 - Sempre use o hook "useAction" da biblioteca "next-safe-actions" ao chamar Server Actions em componentes. Exemplo: (por enquanto nao tem exemplo).
 - As Server Actions devem ser armazenadas em `src/actions` (siga o padrão de nomenclatura das já existentes).
-- Sempre que for necessário interagir com o banco de dados, use o [index.ts](../../src/database/index.ts).
+- Sempre que for necessário interagir com o banco de dados, use o [index.ts](../../src/database/index.ts) e veja o arquivo [index.ts](../../src/database/schema/index.ts).
+- Use React Query para interagir com Server Actions em Client Components. SEMPRE use os componentes (sem exemplos por enquanto ).
+- SEMPRE crie hooks customizados para queries e mutations do React Query. SEMPRE use os (sem exemplos) como referência.
+- SEMPRE crie e exporte uma função que retorne a query key de uma query e mutation key de uma mutation.
 - Usamos a biblioteca "dayjs" para manipular e formatar datas.
 - Ao criar páginas, use o exemplo de páginas ja criadas no projeto para manter os padrões de margin, padding e spacing nas páginas. Exemplo: (sem exemplos por enquanto).
 - Sempre use a biblioteca "react-number-format" ao criar máscaras para inputs.
+- Sempre formate os valores para real quando buscados do banco , lembre tmb que os valores sempre serão salvos em cents no banco, use o arquivo [money.ts](../../src/helpers/money.ts) para formatar para cent e para brl
+
+**Regras do React e Next.js**:
