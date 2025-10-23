@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import './globals.css';
 import { ThemeProvider } from '@/components/theme-provider';
 import { Toaster } from '@/components/ui/sonner';
+import ReactQueryProvider from '@/providers/react-query';
 
 export const metadata: Metadata = {
   title: 'Wallet',
@@ -22,7 +23,7 @@ export default function RootLayout({
           disableTransitionOnChange
           enableSystem
         >
-          {children}
+          <ReactQueryProvider>{children}</ReactQueryProvider>
           <Toaster richColors theme="light" />
         </ThemeProvider>
       </body>
