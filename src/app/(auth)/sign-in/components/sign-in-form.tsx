@@ -3,6 +3,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Wallet } from 'lucide-react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import z from 'zod';
@@ -40,7 +41,7 @@ export const SignInForm = ({
   className,
   ...props
 }: React.ComponentProps<'div'>) => {
-  // const router = useRouter();
+  const router = useRouter();
   const form = useForm<SignInSchema>({
     defaultValues: {
       email: '',
@@ -56,7 +57,7 @@ export const SignInForm = ({
       fetchOptions: {
         onSuccess: () => {
           toast.success('Login realizado com sucesso!');
-          // router.push('/');
+          router.push('/');
         },
         onError: (ctx) => {
           console.log(ctx.error.code);

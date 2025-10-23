@@ -25,11 +25,6 @@ import { NavUser } from './nav-user';
  * @returns Dados do sidebar da aplicação.
  */
 const data = {
-  user: {
-    name: 'Diego',
-    email: 'diego@outlook.com',
-    avatar: 'https://avatars.githubusercontent.com/u/2254731?v=4',
-  },
   accounts: [
     {
       name: 'Conta Itaú',
@@ -162,7 +157,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <NavMain items={data.navMain} />
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={data.user} />
+        <NavUser />
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>
