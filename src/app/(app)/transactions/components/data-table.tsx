@@ -32,14 +32,14 @@ export function DataTable<TData, TValue>({
   });
 
   return (
-    <div className="overflow-hidden rounded-lg border bg-card">
+    <div className="overflow-hidden rounded-lg border text-foreground">
       <Table>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow className="border-b" key={headerGroup.id}>
               {headerGroup.headers.map((header) => (
                 <TableHead
-                  className="border-r bg-muted px-4 py-3 text-left font-semibold text-foreground text-xs last:border-r-0"
+                  className="border-r bg-muted/30 px-4 py-3 text-left font-semibold text-xs last:border-r-0"
                   key={header.id}
                 >
                   {header.isPlaceholder
@@ -57,13 +57,13 @@ export function DataTable<TData, TValue>({
           {table.getRowModel().rows?.length ? (
             table.getRowModel().rows.map((row) => (
               <TableRow
-                className="border-b hover:bg-muted/50"
+                className="border-b"
                 data-state={row.getIsSelected() && 'selected'}
                 key={row.id}
               >
                 {row.getVisibleCells().map((cell) => (
                   <TableCell
-                    className="border-r px-4 py-3 text-muted-foreground last:border-r-0"
+                    className="border-r px-4 py-3 text-xs last:border-r-0"
                     key={cell.id}
                   >
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
