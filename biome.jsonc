@@ -19,7 +19,8 @@
         "noUndeclaredVariables": "off"
       },
       "nursery": {
-        "useConsistentTypeDefinitions": "off"
+        "useConsistentTypeDefinitions": "off",
+        "noReactForwardRef": "off"
       },
       "performance": {
         "noNamespaceImport": "off"
