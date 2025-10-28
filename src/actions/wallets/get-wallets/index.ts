@@ -5,8 +5,9 @@ import { headers } from 'next/headers';
 import { db } from '@/database';
 import { wallets } from '@/database/schema/wallets';
 import { auth } from '@/lib/auth';
+import type { Wallet } from './schema';
 
-export const getWallets = async () => {
+export const getWallets = async (): Promise<Wallet[]> => {
   const session = await auth.api.getSession({
     headers: await headers(),
   });

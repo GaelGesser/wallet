@@ -6,10 +6,8 @@ import { db } from '@/database';
 import { transactions } from '@/database/schema/transactions';
 import { brlToCents } from '@/helpers/money';
 import { auth } from '@/lib/auth';
-import {
-  type UpsertTransactionSchema,
-  upsertTransactionSchema,
-} from './schema';
+import type { UpsertTransactionSchema } from './schema';
+import { upsertTransactionSchema } from './schema';
 
 export const upsertTransaction = async (data: UpsertTransactionSchema) => {
   upsertTransactionSchema.parse(data);

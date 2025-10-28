@@ -19,11 +19,15 @@ import {
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  emptyMessage: string;
+  onRowClick?: (row: TData) => void;
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
+  emptyMessage,
+  onRowClick,
 }: DataTableProps<TData, TValue>) {
   const table = useReactTable({
     data,
@@ -57,9 +61,10 @@ export function DataTable<TData, TValue>({
           {table.getRowModel().rows?.length ? (
             table.getRowModel().rows.map((row) => (
               <TableRow
-                className="border-b"
+                className={`border-b ${onRowClick ? 'cursor-pointer hover:bg-muted/50' : ''}`}
                 data-state={row.getIsSelected() && 'selected'}
                 key={row.id}
+                onClick={() => onRowClick?.(row.original)}
               >
                 {row.getVisibleCells().map((cell) => (
                   <TableCell
@@ -74,7 +79,7 @@ export function DataTable<TData, TValue>({
           ) : (
             <TableRow>
               <TableCell className="h-24 text-center" colSpan={columns.length}>
-                No results.
+                {emptyMessage}
               </TableCell>
             </TableRow>
           )}

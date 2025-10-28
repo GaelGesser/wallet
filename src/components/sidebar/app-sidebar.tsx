@@ -61,78 +61,22 @@ const data = {
       title: 'Contas',
       url: '/accounts',
       icon: Banknote,
-      items: [
-        {
-          title: 'Listagem',
-          url: '/accounts',
-        },
-        {
-          title: 'Nova Conta',
-          url: '/accounts/new',
-        },
-        {
-          title: 'Editar Conta',
-          url: '/accounts/edit/:id',
-        },
-      ],
     },
     {
       title: 'Cartões',
       url: '/cards',
       icon: CreditCard,
-      items: [
-        {
-          title: 'Listagem',
-          url: '/cards',
-        },
-        {
-          title: 'Nova Cartão',
-          url: '/cards/new',
-        },
-        {
-          title: 'Editar Cartão',
-          url: '/cards/edit/:id',
-        },
-      ],
     },
 
     {
       title: 'Categorias',
       url: '/categories',
       icon: List,
-      items: [
-        {
-          title: 'Listagem',
-          url: '/categories',
-        },
-        {
-          title: 'Nova Categoria',
-          url: '/categories/new',
-        },
-        {
-          title: 'Editar Categoria',
-          url: '/categories/edit/:id',
-        },
-      ],
     },
     {
       title: 'Tags',
       url: '/tags',
       icon: Tag,
-      items: [
-        {
-          title: 'Listagem',
-          url: '/tags',
-        },
-        {
-          title: 'Nova Tag',
-          url: '/tags/new',
-        },
-        {
-          title: 'Editar Tag',
-          url: '/tags/edit/:id',
-        },
-      ],
     },
     {
       title: 'Relatórios',

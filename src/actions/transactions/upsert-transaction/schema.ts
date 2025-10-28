@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 export const upsertTransactionSchema = z.object({
-  id: z.string().uuid().optional(),
+  id: z.uuid().optional(),
   name: z.string().trim().min(1, {
     message: 'Nome é obrigatório.',
   }),

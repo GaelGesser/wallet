@@ -1,12 +1,13 @@
 'use server';
 
-import { eq, isNull, or } from 'drizzle-orm';
+import { eq } from 'drizzle-orm';
 import { headers } from 'next/headers';
 import { db } from '@/database';
 import { categories } from '@/database/schema/categories';
 import { auth } from '@/lib/auth';
+import type { Category } from './schema';
 
-export const getCategories = async () => {
+export const getCategories = async (): Promise<Category[]> => {
   const session = await auth.api.getSession({
     headers: await headers(),
   });
@@ -19,9 +20,11 @@ export const getCategories = async () => {
     .select({
       id: categories.id,
       name: categories.name,
+      description: categories.description,
+      createdAt: categories.createdAt,
+      updatedAt: categories.updatedAt,
+      userId: categories.userId,
     })
     .from(categories)
-    .where(
-      or(eq(categories.userId, session.user.id), isNull(categories.userId))
-    );
+    .where(eq(categories.userId, session.user.id));
 };

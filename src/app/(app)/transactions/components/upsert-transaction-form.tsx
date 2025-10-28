@@ -6,9 +6,9 @@ import { useForm } from 'react-hook-form';
 // import { Textarea } from '@/components/ui/textarea';
 import { NumericFormat } from 'react-number-format';
 import { z } from 'zod';
-import { getCategories } from '@/actions/categories';
-import { upsertTransaction } from '@/actions/transactions';
-import { getWallets } from '@/actions/wallets';
+import { getCategories } from '@/actions/categories/get-categories';
+import { upsertTransaction } from '@/actions/transactions/upsert-transaction';
+import { getWallets } from '@/actions/wallets/get-wallets';
 import { Button } from '@/components/ui/button';
 import {
   DialogContent,

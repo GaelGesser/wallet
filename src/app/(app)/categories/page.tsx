@@ -1,20 +1,15 @@
-import { eq } from 'drizzle-orm';
-import { Plus, Search } from 'lucide-react';
+import { Plus, Search, Stars } from 'lucide-react';
 import { headers } from 'next/headers';
 import { redirect } from 'next/navigation';
-import { DataTable } from '@/components/common/data-table';
 import { AppSidebarBody } from '@/components/sidebar/app-sidebar-body';
 import { AppSidebarHeader } from '@/components/sidebar/app-sidebar-header';
-import AdvancedPagination from '@/components/ui/advanced-pagination';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { db } from '@/database';
-import { schema } from '@/database/schema';
 import { auth } from '@/lib/auth';
-import AddTransactionButton from './components/add-transaction-button';
-import { columns } from './components/columns';
+import AddCategoryButton from './components/add-category-button';
+import { CategoriesTable } from './components/categories-table';
 
-export default async function TransactionsPage() {
+export default async function CategoriesPage() {
   const session = await auth.api.getSession({
     headers: await headers(),
   });
@@ -22,16 +17,11 @@ export default async function TransactionsPage() {
     redirect('/sign-in');
   }
 
-  const transactions = await db
-    .select()
-    .from(schema.transactions)
-    .where(eq(schema.transactions.userId, session.user.id));
-
   return (
     <>
       <AppSidebarHeader
         breadcrumbItems={[
-          { label: 'Transações', href: '/transactions', separator: false },
+          { label: 'Categorias', href: '/categories', separator: false },
         ]}
       />
       <AppSidebarBody>
@@ -39,31 +29,29 @@ export default async function TransactionsPage() {
           <div className="flex w-full items-center justify-between gap-2 border-border border-b pb-2">
             <div className="flex w-full items-center gap-2 py-2">
               <div className="flex items-center gap-2">
-                <Input className="max-w-xs" placeholder="Buscar transação" />
+                <Input className="max-w-xs" placeholder="Buscar categoria" />
                 <Button size="icon" variant="outline">
                   <Search className="size-3" />
                 </Button>
               </div>
 
-              <Button className="text-xs" size="sm" variant="ghost">
+              <Button className="text-xs" size="default" variant="outline">
                 <Plus className="size-3" />
                 Novo Filtro
               </Button>
             </div>
 
             <div className="flex items-center gap-2">
-              <AddTransactionButton />
+
+              {/* TODO: Criar um modal que vai perguntar se o usuário deseja que crie categorias padrões para ele */}
+              <Button size="icon" variant="outline">
+                <Stars className="size-3" />
+              </Button>
+              <AddCategoryButton />
             </div>
           </div>
 
-          <DataTable
-            columns={columns}
-            data={transactions}
-            emptyMessage="Nenhuma transação encontrada."
-          />
-          {transactions.length > 0 && (
-            <AdvancedPagination currentPage={1} totalPages={4} />
-          )}
+          <CategoriesTable />
         </div>
       </AppSidebarBody>
     </>
