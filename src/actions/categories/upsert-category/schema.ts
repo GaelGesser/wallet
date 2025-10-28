@@ -6,6 +6,9 @@ export const upsertCategorySchema = z.object({
     message: 'Nome é obrigatório.',
   }),
   description: z.string().optional(),
+  icon: z.string().min(1, {
+    message: 'Ícone é obrigatório.',
+  }),
 });
 
 export type UpsertCategorySchema = z.infer<typeof upsertCategorySchema>;

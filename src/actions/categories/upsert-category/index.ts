@@ -18,9 +18,7 @@ export const upsertCategory = async (data: UpsertCategorySchema) => {
     throw new Error('Unauthorized');
   }
 
-  const { id, name, description } = data;
-
-  console.log(data);
+  const { id, name, description, icon } = data;
 
   const userId = session.user.id;
 
@@ -47,6 +45,7 @@ export const upsertCategory = async (data: UpsertCategorySchema) => {
       .set({
         name: name.trim().toLowerCase(),
         description,
+        icon,
         updatedAt: new Date(),
       })
       .where(eq(categories.id, id))
@@ -81,6 +80,7 @@ export const upsertCategory = async (data: UpsertCategorySchema) => {
     .values({
       name: name.trim().toLowerCase(),
       description,
+      icon,
       userId,
     })
     .returning();

@@ -10,6 +10,7 @@ export const categories = pgTable(
       .$defaultFn(() => uuidv7()),
     name: text('name').notNull(),
     description: text('description'),
+    icon: text('icon').notNull().default('Circle'),
     userId: uuid('user_id').references(() => users.id, { onDelete: 'cascade' }),
     createdAt: timestamp('created_at')
       .$defaultFn(() => new Date())

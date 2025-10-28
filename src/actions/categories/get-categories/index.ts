@@ -21,6 +21,7 @@ export const getCategories = async (): Promise<Category[]> => {
       id: categories.id,
       name: categories.name,
       description: categories.description,
+      icon: categories.icon,
       createdAt: categories.createdAt,
       updatedAt: categories.updatedAt,
       userId: categories.userId,

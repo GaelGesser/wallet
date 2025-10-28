@@ -26,6 +26,7 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
+import { IconPicker } from '@/components/common/icon-picker';
 import { useUpsertCategory } from '@/hooks/mutations/use-upsert-category';
 import { toast } from 'sonner';
 
@@ -48,6 +49,7 @@ const UpsertCategoryForm = ({
     defaultValues: {
       name: category?.name ?? '',
       description: category?.description ?? '',
+      icon: category?.icon ?? 'Circle',
     },
   });
 
@@ -56,6 +58,7 @@ const UpsertCategoryForm = ({
       form.reset({
         name: category.name,
         description: category.description ?? '',
+        icon: category.icon ?? 'Circle',
       });
     }
   }, [isOpen, form, category]);
@@ -95,6 +98,20 @@ const UpsertCategoryForm = ({
                     placeholder="Informe um nome para a categoria"
                     {...field}
                   />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="icon"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Ícone</FormLabel>
+                <FormControl>
+                  <IconPicker value={field.value} onChange={field.onChange} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
