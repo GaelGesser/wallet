@@ -3,11 +3,13 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 import type { Category } from '@/actions/categories/get-categories/schema';
 import {
   type UpsertCategorySchema,
   upsertCategorySchema,
 } from '@/actions/categories/upsert-category/schema';
+import { IconPicker } from '@/components/common/icon-select';
 import { Button } from '@/components/ui/button';
 import {
   DialogContent,
@@ -26,9 +28,7 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { IconPicker } from '@/components/common/icon-picker';
 import { useUpsertCategory } from '@/hooks/mutations/use-upsert-category';
-import { toast } from 'sonner';
 
 interface UpsertCategoryFormProps {
   isOpen: boolean;
@@ -49,7 +49,7 @@ const UpsertCategoryForm = ({
     defaultValues: {
       name: category?.name ?? '',
       description: category?.description ?? '',
-      icon: category?.icon ?? 'Circle',
+      icon: category?.icon ?? 'Home',
     },
   });
 
@@ -58,13 +58,16 @@ const UpsertCategoryForm = ({
       form.reset({
         name: category.name,
         description: category.description ?? '',
-        icon: category.icon ?? 'Circle',
+        icon: category.icon ?? 'Home',
       });
     }
   }, [isOpen, form, category]);
 
   const onSubmit = async (values: UpsertCategorySchema) => {
-    const result = await mutation.mutateAsync({...values, id: category?.id ?? undefined});
+    const result = await mutation.mutateAsync({
+      ...values,
+      id: category?.id ?? undefined,
+    });
     if (result.success) {
       toast.success(result.message);
       onSuccess?.();
@@ -111,7 +114,7 @@ const UpsertCategoryForm = ({
               <FormItem>
                 <FormLabel>Ícone</FormLabel>
                 <FormControl>
-                  <IconPicker value={field.value} onChange={field.onChange} />
+                  <IconPicker onChange={field.onChange} value={field.value} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
