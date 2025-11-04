@@ -13,7 +13,8 @@
       },
       "suspicious": {
         "noConsole": "off",
-        "useAwait": "off"
+        "useAwait": "off",
+        "noArrayIndexKey": "off"
       },
       "correctness": {
         "noUndeclaredVariables": "off"

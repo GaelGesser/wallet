@@ -4,7 +4,6 @@ import {
   Banknote,
   BarChart,
   CreditCard,
-  Landmark,
   LayoutDashboard,
   List,
   Tag,
@@ -20,31 +19,7 @@ import { AccountSwitcher } from './account-switcher';
 import { NavMain } from './nav-main';
 import { NavUser } from './nav-user';
 
-/**
- * Dados do sidebar da aplicação.
- * @returns Dados do sidebar da aplicação.
- */
 const data = {
-  accounts: [
-    {
-      name: 'Conta Itaú',
-      logo: Landmark,
-      color: 'bg-orange-500',
-      textColor: 'text-white',
-    },
-    {
-      name: 'Conta Investimento',
-      logo: Landmark,
-      color: 'bg-yellow-500',
-      textColor: 'text-black',
-    },
-    {
-      name: 'Conta Nubank',
-      logo: Landmark,
-      color: 'bg-purple-500',
-      textColor: 'text-white',
-    },
-  ],
   navMain: [
     {
       title: 'Dashboard',
@@ -95,7 +70,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
-        <AccountSwitcher accounts={data.accounts} />
+        <AccountSwitcher />
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={data.navMain} />
