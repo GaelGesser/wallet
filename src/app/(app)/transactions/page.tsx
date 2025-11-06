@@ -1,18 +1,13 @@
-import { eq } from 'drizzle-orm';
 import { Plus, Search } from 'lucide-react';
 import { headers } from 'next/headers';
 import { redirect } from 'next/navigation';
-import { DataTable } from '@/components/common/data-table';
 import { AppSidebarBody } from '@/components/sidebar/app-sidebar-body';
 import { AppSidebarHeader } from '@/components/sidebar/app-sidebar-header';
-import AdvancedPagination from '@/components/ui/advanced-pagination';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { db } from '@/database';
-import { schema } from '@/database/schema';
 import { auth } from '@/lib/auth';
 import AddTransactionButton from './components/add-transaction-button';
-import { columns } from './components/columns';
+import { TransactionsTable } from './components/transactions-table';
 
 export default async function TransactionsPage() {
   const session = await auth.api.getSession({
@@ -21,11 +16,6 @@ export default async function TransactionsPage() {
   if (!session?.user) {
     redirect('/sign-in');
   }
-
-  const transactions = await db
-    .select()
-    .from(schema.transactions)
-    .where(eq(schema.transactions.userId, session.user.id));
 
   return (
     <>
@@ -56,14 +46,7 @@ export default async function TransactionsPage() {
             </div>
           </div>
 
-          <DataTable
-            columns={columns}
-            data={transactions}
-            emptyMessage="Nenhuma transação encontrada."
-          />
-          {transactions.length > 0 && (
-            <AdvancedPagination currentPage={1} totalPages={4} />
-          )}
+          <TransactionsTable />
         </div>
       </AppSidebarBody>
     </>

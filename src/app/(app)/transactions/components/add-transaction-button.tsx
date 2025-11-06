@@ -18,7 +18,10 @@ const AddTransactionButton = () => {
           Adicionar transação
         </Button>
       </DialogTrigger>
-      <UpsertTransactionForm isOpen={isOpen} />
+      <UpsertTransactionForm
+        isOpen={isOpen}
+        onSuccess={() => setIsOpen(false)}
+      />
     </Dialog>
   );
 };

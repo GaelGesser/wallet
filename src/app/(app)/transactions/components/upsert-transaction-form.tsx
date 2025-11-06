@@ -1,10 +1,11 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useQueryClient } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-// import { Textarea } from '@/components/ui/textarea';
 import { NumericFormat } from 'react-number-format';
+import { toast } from 'sonner';
 import { z } from 'zod';
 import { getCategories } from '@/actions/categories/get-categories';
 import { upsertTransaction } from '@/actions/transactions/upsert-transaction';
@@ -67,6 +68,7 @@ const UpsertTransactionForm = ({
   isOpen,
   onSuccess,
 }: UpsertTransactionFormProps) => {
+  const queryClient = useQueryClient();
   const [categories, setCategories] = useState<
     Array<{ id: string; name: string }>
   >([]);
@@ -127,6 +129,10 @@ const UpsertTransactionForm = ({
         id: transaction?.id,
       });
 
+      toast.success('Transação salva com sucesso');
+      form.reset();
+
+      queryClient.invalidateQueries({ queryKey: ['transactions'] });
       onSuccess?.();
     } catch (error) {
       console.error('Erro ao salvar transação:', error);
