@@ -8,13 +8,13 @@ import {
   ArrowUpRight,
   Circle,
   Eye,
-  Pencil,
   Trash,
 } from 'lucide-react';
 import type { Transaction } from '@/actions/transactions/get-transactions/schema';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+import EditTransactionButton from './edit-transaction-button';
 
 const DOLLAR_100 = 100;
 
@@ -145,14 +145,12 @@ export const columns: ColumnDef<Transaction>[] = [
         <span />
       </div>
     ),
-    cell: () => (
+    cell: ({ row }) => (
       <div className="flex items-center justify-end gap-2">
         <Button size="icon" variant="ghost">
           <Eye className="size-4" />
         </Button>
-        <Button size="icon" variant="ghost">
-          <Pencil className="size-4" />
-        </Button>
+        <EditTransactionButton transaction={row.original} />
         <Button size="icon" variant="ghost">
           <Trash className="size-4" />
         </Button>

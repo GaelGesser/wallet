@@ -9,4 +9,8 @@ export type Transaction = {
   categoryId: string | null;
   categoryName: string | null;
   categoryIcon: string | null;
+  wallet: {
+    id: string;
+    name: string;
+  } | null;
 };

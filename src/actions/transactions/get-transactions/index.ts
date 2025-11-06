@@ -28,12 +28,20 @@ export const getTransactions = async (): Promise<Transaction[]> => {
       categoryId: schema.transactions.categoryId,
       categoryName: schema.categories.name,
       categoryIcon: schema.categories.icon,
+      wallet: {
+        id: schema.wallets.id,
+        name: schema.wallets.name,
+      },
     })
     .from(schema.transactions)
     .where(eq(schema.transactions.userId, session.user.id))
     .leftJoin(
       schema.categories,
       eq(schema.transactions.categoryId, schema.categories.id)
+    )
+    .leftJoin(
+      schema.wallets,
+      eq(schema.transactions.walletId, schema.wallets.id)
     )
     .orderBy(desc(schema.transactions.date));
 

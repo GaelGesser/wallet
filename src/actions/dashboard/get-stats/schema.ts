@@ -1,8 +1,6 @@
 export type DashboardStats = {
-  totalIncome: number;
-  totalExpense: number;
-  totalBalance: number;
-  pendingIncome: number;
-  pendingExpense: number;
-  totalCreditCardsBalance: number;
+  accountBalance: number;
+  monthlyIncome: number;
+  monthlyExpense: number;
+  creditCardsBalance: number;
 };

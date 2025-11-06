@@ -8,6 +8,7 @@ import { NumericFormat } from 'react-number-format';
 import { toast } from 'sonner';
 import { z } from 'zod';
 import { getCategories } from '@/actions/categories/get-categories';
+import type { Transaction } from '@/actions/transactions/get-transactions/schema';
 import { upsertTransaction } from '@/actions/transactions/upsert-transaction';
 import { getWallets } from '@/actions/wallets/get-wallets';
 import { Button } from '@/components/ui/button';
@@ -34,8 +35,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import type { transactions } from '@/database/schema/transactions';
-import { centsToBrl } from '@/helpers/money';
+import { centsToBrl, centsToBrlInput } from '@/helpers/money';
 
 const formSchema = z.object({
   name: z.string().trim().min(1, {
@@ -51,15 +51,18 @@ const formSchema = z.object({
   type: z.enum(['expense', 'income', 'transfer'], {
     message: 'Tipo é obrigatório.',
   }),
+  status: z.enum(['paid', 'pending', 'canceled'], {
+    message: 'Status é obrigatório.',
+  }),
   categoryId: z.string().optional(),
-  walletId: z.string().uuid({
+  walletId: z.uuid({
     message: 'Carteira é obrigatória.',
   }),
 });
 
 interface UpsertTransactionFormProps {
   isOpen: boolean;
-  transaction?: typeof transactions.$inferSelect;
+  transaction?: Transaction;
   onSuccess?: () => void;
 }
 
@@ -84,11 +87,12 @@ const UpsertTransactionForm = ({
       name: transaction?.name ?? '',
       description: transaction?.description ?? '',
       amount: transaction?.amountInCents
-        ? centsToBrl(transaction.amountInCents).replace('R$', '').trim()
+        ? centsToBrlInput(transaction.amountInCents)
         : '',
       type: transaction?.type ?? 'expense',
+      status: transaction?.status ?? 'pending',
       categoryId: transaction?.categoryId ?? undefined,
-      walletId: transaction?.walletId ?? '',
+      walletId: transaction?.wallet?.id ?? '',
     },
   });
 
@@ -116,8 +120,9 @@ const UpsertTransactionForm = ({
           ? centsToBrl(transaction.amountInCents).replace('R$', '').trim()
           : '',
         type: transaction?.type ?? 'expense',
+        status: transaction?.status ?? 'pending',
         categoryId: transaction?.categoryId ?? undefined,
-        walletId: transaction?.walletId ?? '',
+        walletId: transaction?.wallet?.id ?? '',
       });
     }
   }, [isOpen, form, transaction]);
@@ -234,7 +239,7 @@ const UpsertTransactionForm = ({
                     placeholder="R$ 0,00"
                     prefix="R$ "
                     thousandSeparator="."
-                    value={field.value}
+                    value={field.value || ''}
                   />
                 </FormControl>
                 <FormMessage />
@@ -269,6 +274,46 @@ const UpsertTransactionForm = ({
                       <div className="size-2 rounded-full bg-blue-500" />{' '}
                       Transferência
                     </SelectItem>
+                  </SelectContent>
+                </Select>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="status"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Status</FormLabel>
+                <Select onValueChange={field.onChange} value={field.value}>
+                  <FormControl>
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="Selecione o status" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    <SelectItem value="paid">
+                      <div className="flex items-center gap-2">
+                        <div className="size-2 rounded-full bg-green-500" />
+                        Pago
+                      </div>
+                    </SelectItem>
+                    <SelectItem value="pending">
+                      <div className="flex items-center gap-2">
+                        <div className="size-2 rounded-full bg-yellow-500" />
+                        Pendente
+                      </div>
+                    </SelectItem>
+                    {transaction && (
+                      <SelectItem value="canceled">
+                        <div className="flex items-center gap-2">
+                          <div className="size-2 rounded-full bg-red-500" />
+                          Cancelado
+                        </div>
+                      </SelectItem>
+                    )}
                   </SelectContent>
                 </Select>
                 <FormMessage />

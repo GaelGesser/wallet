@@ -18,27 +18,45 @@ export const getDashboardStats = async (): Promise<DashboardStats> => {
 
   const userId = session.user.id;
 
+  const now = new Date();
+  const FIRST_DAY_OF_MONTH = 1;
+  const HOURS_IN_DAY = 23;
+  const MINUTES_IN_HOUR = 59;
+  const SECONDS_IN_MINUTE = 59;
+  const NEXT_MONTH_OFFSET = 1;
+  const LAST_DAY_OF_MONTH = 0;
+
+  const startOfMonth = new Date(
+    now.getFullYear(),
+    now.getMonth(),
+    FIRST_DAY_OF_MONTH
+  );
+  const endOfMonth = new Date(
+    now.getFullYear(),
+    now.getMonth() + NEXT_MONTH_OFFSET,
+    LAST_DAY_OF_MONTH,
+    HOURS_IN_DAY,
+    MINUTES_IN_HOUR,
+    SECONDS_IN_MINUTE
+  );
+
   const [stats] = await db
     .select({
-      totalIncome:
-        sql<number>`COALESCE(SUM(CASE WHEN ${schema.transactions.type} = 'income' AND ${schema.transactions.status} = 'paid' THEN ${schema.transactions.amountInCents} ELSE 0 END), 0)`.as(
-          'total_income'
+      accountBalance:
+        sql<number>`COALESCE(SUM(CASE WHEN ${schema.transactions.status} = 'paid' AND ${schema.transactions.walletId} IS NOT NULL AND ${schema.wallets.type} != 'credit' THEN CASE WHEN ${schema.transactions.type} = 'income' THEN ${schema.transactions.amountInCents} WHEN ${schema.transactions.type} = 'expense' THEN -${schema.transactions.amountInCents} ELSE 0 END ELSE 0 END), 0)`.as(
+          'account_balance'
         ),
-      totalExpense:
-        sql<number>`COALESCE(SUM(CASE WHEN ${schema.transactions.type} = 'expense' AND ${schema.transactions.status} = 'paid' THEN ${schema.transactions.amountInCents} ELSE 0 END), 0)`.as(
-          'total_expense'
+      monthlyIncome:
+        sql<number>`COALESCE(SUM(CASE WHEN ${schema.transactions.type} = 'income' AND ${schema.transactions.status} != 'canceled' AND ${schema.transactions.date} >= ${startOfMonth} AND ${schema.transactions.date} <= ${endOfMonth} THEN ${schema.transactions.amountInCents} ELSE 0 END), 0)`.as(
+          'monthly_income'
         ),
-      pendingIncome:
-        sql<number>`COALESCE(SUM(CASE WHEN ${schema.transactions.type} = 'income' AND ${schema.transactions.status} = 'pending' THEN ${schema.transactions.amountInCents} ELSE 0 END), 0)`.as(
-          'pending_income'
+      monthlyExpense:
+        sql<number>`COALESCE(SUM(CASE WHEN ${schema.transactions.type} = 'expense' AND ${schema.transactions.status} != 'canceled' AND ${schema.transactions.date} >= ${startOfMonth} AND ${schema.transactions.date} <= ${endOfMonth} THEN ${schema.transactions.amountInCents} ELSE 0 END), 0)`.as(
+          'monthly_expense'
         ),
-      pendingExpense:
-        sql<number>`COALESCE(SUM(CASE WHEN ${schema.transactions.type} = 'expense' AND ${schema.transactions.status} = 'pending' THEN ${schema.transactions.amountInCents} ELSE 0 END), 0)`.as(
-          'pending_expense'
-        ),
-      totalCreditCardsBalance:
+      creditCardsBalance:
         sql<number>`COALESCE(SUM(CASE WHEN ${schema.transactions.status} = 'paid' AND ${schema.transactions.walletId} IS NOT NULL AND ${schema.wallets.type} = 'credit' THEN CASE WHEN ${schema.transactions.type} = 'expense' THEN ${schema.transactions.amountInCents} ELSE 0 END ELSE 0 END), 0)`.as(
-          'total_credit_cards_balance'
+          'credit_cards_balance'
         ),
     })
     .from(schema.transactions)
@@ -48,14 +66,10 @@ export const getDashboardStats = async (): Promise<DashboardStats> => {
     )
     .where(eq(schema.transactions.userId, userId));
 
-  const totalBalance = Number(stats.totalIncome) - Number(stats.totalExpense);
-
   return {
-    totalIncome: Number(stats.totalIncome),
-    totalExpense: Number(stats.totalExpense),
-    totalBalance,
-    pendingIncome: Number(stats.pendingIncome),
-    pendingExpense: Number(stats.pendingExpense),
-    totalCreditCardsBalance: Number(stats.totalCreditCardsBalance),
+    accountBalance: Number(stats.accountBalance),
+    monthlyIncome: Number(stats.monthlyIncome),
+    monthlyExpense: Number(stats.monthlyExpense),
+    creditCardsBalance: Number(stats.creditCardsBalance),
   };
 };

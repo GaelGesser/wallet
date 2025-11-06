@@ -20,8 +20,17 @@ export const upsertTransaction = async (data: UpsertTransactionSchema) => {
     throw new Error('Unauthorized');
   }
 
-  const { id, name, date, description, amount, type, categoryId, walletId } =
-    data;
+  const {
+    id,
+    name,
+    date,
+    description,
+    amount,
+    type,
+    status,
+    categoryId,
+    walletId,
+  } = data;
   const amountInCents = brlToCents(Number.parseFloat(amount));
 
   if (id) {
@@ -33,8 +42,9 @@ export const upsertTransaction = async (data: UpsertTransactionSchema) => {
         description,
         amountInCents,
         type,
+        status,
         categoryId: categoryId && categoryId !== '' ? categoryId : null,
-        walletId,
+        walletId: walletId && walletId !== '' ? walletId : null,
         updatedAt: new Date(),
       })
       .where(eq(transactions.id, id))
@@ -51,8 +61,9 @@ export const upsertTransaction = async (data: UpsertTransactionSchema) => {
       description,
       amountInCents,
       type,
+      status,
       categoryId: categoryId && categoryId !== '' ? categoryId : null,
-      walletId,
+      walletId: walletId && walletId !== '' ? walletId : null,
       userId: session.user.id,
     })
     .returning();

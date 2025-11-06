@@ -6,4 +6,7 @@ export const centsToBrl = (cents: number) =>
     currency: 'BRL',
   }).format(cents / CENTS_PER_BRL);
 
-export const brlToCents = (brl: number) => brl * CENTS_PER_BRL;
+export const brlToCents = (brl: number) => Math.round(brl * CENTS_PER_BRL);
+
+export const centsToBrlInput = (cents: number) =>
+  (cents / CENTS_PER_BRL).toString();
