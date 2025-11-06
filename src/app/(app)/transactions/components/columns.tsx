@@ -8,6 +8,8 @@ import {
   ArrowUpRight,
   Circle,
   Eye,
+  Pencil,
+  Trash,
 } from 'lucide-react';
 import type { Transaction } from '@/actions/transactions/get-transactions/schema';
 import { Badge } from '@/components/ui/badge';
@@ -32,6 +34,18 @@ export const columns: ColumnDef<Transaction>[] = [
   {
     accessorKey: 'name',
     header: 'Nome',
+    cell: ({ row }) => {
+      const name = row.original.name;
+      const description = row.original.description;
+      return (
+        <div className="flex flex-col gap-1 text-left capitalize">
+          <span className="font-medium">{name}</span>
+          {description && (
+            <span className="text-muted-foreground text-xs">{description}</span>
+          )}
+        </div>
+      );
+    },
   },
   {
     accessorKey: 'categoryName',
@@ -65,7 +79,7 @@ export const columns: ColumnDef<Transaction>[] = [
         transfer: 'Transferência',
       };
       return (
-        <Badge variant="outline">
+        <Badge className="flex items-center gap-2" variant="outline">
           {type === 'expense' && (
             <ArrowDownRight className="size-4 text-red-500" />
           )}
@@ -135,6 +149,12 @@ export const columns: ColumnDef<Transaction>[] = [
       <div className="flex items-center justify-end gap-2">
         <Button size="icon" variant="ghost">
           <Eye className="size-4" />
+        </Button>
+        <Button size="icon" variant="ghost">
+          <Pencil className="size-4" />
+        </Button>
+        <Button size="icon" variant="ghost">
+          <Trash className="size-4" />
         </Button>
       </div>
     ),

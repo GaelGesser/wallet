@@ -1,5 +1,6 @@
 import { AppSidebarBody } from '@/components/sidebar/app-sidebar-body';
 import { AppSidebarHeader } from '@/components/sidebar/app-sidebar-header';
+import { DashboardCards } from './components/dashboard-cards';
 
 export default function DashboardPage() {
   return (
@@ -8,11 +9,7 @@ export default function DashboardPage() {
         breadcrumbItems={[{ label: 'Dashboard', href: '/', separator: false }]}
       />
       <AppSidebarBody>
-        <div className="grid auto-rows-min gap-4 md:grid-cols-3">
-          <div className="aspect-video rounded-xl bg-muted/50" />
-          <div className="aspect-video rounded-xl bg-muted/50" />
-          <div className="aspect-video rounded-xl bg-muted/50" />
-        </div>
+        <DashboardCards />
         <div className="min-h-screen flex-1 rounded-xl bg-muted/50 md:min-h-min" />
       </AppSidebarBody>
     </>

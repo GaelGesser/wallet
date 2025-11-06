@@ -20,6 +20,7 @@ export const getTransactions = async (): Promise<Transaction[]> => {
     .select({
       id: schema.transactions.id,
       name: schema.transactions.name,
+      description: schema.transactions.description,
       date: schema.transactions.date,
       amountInCents: schema.transactions.amountInCents,
       type: schema.transactions.type,

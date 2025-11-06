@@ -133,6 +133,7 @@ const UpsertTransactionForm = ({
       form.reset();
 
       queryClient.invalidateQueries({ queryKey: ['transactions'] });
+      queryClient.invalidateQueries({ queryKey: ['dashboard-stats'] });
       onSuccess?.();
     } catch (error) {
       console.error('Erro ao salvar transação:', error);
